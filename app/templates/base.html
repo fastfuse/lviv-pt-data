@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <title>Lviv Transport</title>
+
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/static/dist/leaflet.css" />
+  <script src="/static/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="/static/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="/static/dist/MarkerCluster.Default.css" />
+  <script src="/static/dist/leaflet.markercluster-src.js"></script>
+
+
+<style>
+
+  html, body, .row, .container-fluid {
+    height: 100%;
+  }
+
+  #map {
+   height: 100%;
+  }
+
+</style>
+
+</head>
+
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Lviv Transport Data</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    {% block content %}{% endblock content %}
+  </div>
+
+
+  <script>
+
+    var map = L.map('map').setView([49.84104, 24.03164], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+     maxZoom: 19
+    }).addTo(map);
+
+    $.ajax({
+        type: "GET",
+        url: "api/stops",
+        dataType: "json",
+        success: function (response) {
+          stops_layer = L.geoJSON(response,{
+            onEachFeature: function(feature, layer){
+              layer.bindPopup(feature.properties.stop_name);
+            }
+          })
+
+          stops_clustered = L.markerClusterGroup();
+          stops_clustered.addLayer(stops_layer);
+          map.addLayer(stops_clustered);
+        }
+    });
+
+  </script>
+
+</body>
+</html>
