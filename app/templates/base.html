@@ -64,27 +64,41 @@
 
   <script>
 
-    var map = L.map('map').setView([49.84104, 24.03164], 15);
+    var map = L.map('map').setView([49.84104, 24.03164], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
      maxZoom: 19
     }).addTo(map);
 
+    // $.ajax({
+    //     type: "GET",
+    //     url: "api/stops",
+    //     dataType: "json",
+    //     success: function (response) {
+    //       stops_layer = L.geoJSON(response,{
+    //         onEachFeature: function(feature, layer){
+    //           layer.bindPopup(feature.properties.stop_name);
+    //         }
+    //       })
+
+    //       stops_clustered = L.markerClusterGroup();
+    //       stops_clustered.addLayer(stops_layer);
+    //       map.addLayer(stops_clustered);
+    //     }
+    // });
+
+    var vehicles = L.layerGroup().addTo(map);
+
     $.ajax({
         type: "GET",
-        url: "api/stops",
+        url: "api/positions",
         dataType: "json",
         success: function (response) {
-          stops_layer = L.geoJSON(response,{
-            onEachFeature: function(feature, layer){
-              layer.bindPopup(feature.properties.stop_name);
-            }
+          response.forEach(function(item){
+            L.marker([item.vehicle.position.latitude,
+                      item.vehicle.position.longitude]).bindPopup(item.vehicle.trip.route.route_short_name).addTo(vehicles)
           })
-
-          stops_clustered = L.markerClusterGroup();
-          stops_clustered.addLayer(stops_layer);
-          map.addLayer(stops_clustered);
         }
     });
 
