@@ -10,6 +10,9 @@ class Config(object):
 
     DATA_DIR = os.path.join(BASE_DIR, 'app', 'data')
 
+    VEHICLE_POSITIONS_URL = "http://track.ua-gis.com/gtfs/lviv/vehicle_position"
+    STATIC_DATA_URL = "http://track.ua-gis.com/gtfs/lviv/static.zip"
+
     # >>> import os
     # >>> os.urandom(24)
     # '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'

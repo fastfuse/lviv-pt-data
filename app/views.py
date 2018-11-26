@@ -37,6 +37,7 @@ def positions():
 
     return make_response(jsonify(vehicle_positions)), 200
 
+
 # TODO:
 # * refresh static data
 # * refresh vehicle_position
