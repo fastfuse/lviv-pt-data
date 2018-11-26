@@ -5,10 +5,10 @@ from zipfile import ZipFile
 import requests
 from google.protobuf import json_format
 
-# from app import app
-# from .gtfs_realtime_pb2 import FeedMessage
+from app import app
+from .gtfs_realtime_pb2 import FeedMessage
 
-# DATA_DIR = app.config['DATA_DIR']
+DATA_DIR = app.config['DATA_DIR']
 
 
 def get_vehicle_positions():
@@ -102,19 +102,18 @@ def unzip_archive(arch_name, dest_dir=None):
     """
     Unzip archive
     """
-    dest_dir = dest_dir or os.getcwd()po
+    dest = dest_dir or os.getcwd()
 
     with ZipFile(arch_name) as zf:
-        zf.extractall(dest_dir)
+        zf.extractall(dest)
 
-
-if __name__ == '__main__':
-    positions_url = "http://track.ua-gis.com/gtfs/lviv/vehicle_position"
-    static_url = "http://track.ua-gis.com/gtfs/lviv/static.zip"
-
-    download_file(positions_url, dest_dir="data")
-    static_zip = download_file(static_url, dest_dir="data")
-
-    static_zip_path = os.path.join("data", static_zip)
-
-    unzip_archive(static_zip, "data")
+# if __name__ == '__main__':
+#     positions_url = "http://track.ua-gis.com/gtfs/lviv/vehicle_position"
+#     static_url = "http://track.ua-gis.com/gtfs/lviv/static.zip"
+#
+#     download_file(positions_url, dest_dir="data")
+#     static_zip = download_file(static_url, dest_dir="data")
+#
+#     static_zip_path = os.path.join("data", static_zip)
+#
+#     unzip_archive(static_zip, "data")

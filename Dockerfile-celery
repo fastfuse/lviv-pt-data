@@ -1,0 +1,9 @@
+FROM python:3.6-slim
+
+RUN echo 'Dockerfile-Celery'
+RUN mkdir /app
+WORKDIR /app
+COPY . /app
+RUN pip install -U pip
+RUN pip install -r requirements.txt
+ENTRYPOINT celery -A app.tasks:celery worker --concurrency=10 --loglevel=info

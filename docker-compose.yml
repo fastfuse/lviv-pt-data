@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+
+  celery:
+    environment:
+      - APP_SETTINGS=config.ProductionConfig
+      - REDIS_URL=redis://redis:6379/0
+    user: nobody
+    build:
+      context: .
+      dockerfile: Dockerfile-celery

@@ -3,7 +3,7 @@
 {% block content %}
 
   <div class="row">
-    <div class="col-md-4">
+{#     <div class="col-md-4">
       <br>
       <h3>Routes:</h3>
       <ul class="list-group">
@@ -13,9 +13,9 @@
           {{ route.route_short_name }} {{ route.route_long_name }}
         </li>
         {% endfor %}
-    </div>
+    </div> #}
 
-    <div class="col-md-8 map" id="map">Map</div>
+    <div class="col map" id="map">Map</div>
   </div>
 
 {% endblock content %}

@@ -39,7 +39,11 @@ def positions():
 
 
 # TODO:
-# * refresh static data
-# * refresh vehicle_position
+# * refresh static data 2 times/week (daily?)
+# * refresh vehicle_position every 12 seconds
 # * filter by route
 # * mqtt
+
+# Celery cmd:
+# $> celery -A app.tasks:celery beat --loglevel=info
+# $> celery -A app.tasks:celery worker --concurrency=10 --loglevel=info
