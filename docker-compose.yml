@@ -2,11 +2,56 @@ version: '3'
 
 services:
 
+  app-dev:
+    environment:
+      - APP_SETTINGS=config.DevelopmentConfig
+      - FLASK_APP=app/__init__.py
+      - REDIS_URL=redis://redis:6379
+      - CELERY_BROKER_URL=redis://redis:6379
+      - CELERY_RESULT_BACKEND=redis://redis:6379
+
+    build:
+     context: .
+     dockerfile: Dockerfile
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - shared-data:/app/app/data
+
+    depends_on:
+      - celery
+      - redis
+      - celery-beat
+
+
   celery:
     environment:
-      - APP_SETTINGS=config.ProductionConfig
-      - REDIS_URL=redis://redis:6379/0
-    user: nobody
+      - APP_SETTINGS=config.DevelopmentConfig
+      - REDIS_URL=redis://redis:6379
+
     build:
       context: .
       dockerfile: Dockerfile-celery
+
+    volumes:
+      - shared-data:/app/app/data
+
+
+  celery-beat:
+    environment:
+    - APP_SETTINGS=config.DevelopmentConfig
+    - REDIS_URL=redis://redis:6379
+
+    build:
+      context: .
+      dockerfile: Dockerfile-beat
+
+
+  redis:
+    image: 'redis:alpine'
+
+
+volumes:
+  shared-data:

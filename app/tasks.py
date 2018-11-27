@@ -31,3 +31,6 @@ def update_vehicle_position():
 def setup_periodic_tasks(sender, **kwargs):
     # Call update_vehicle_position() every 10 seconds
     sender.add_periodic_task(12.0, update_vehicle_position.s(), name='update vehicle positions')
+
+    # Call update_static_data() daily
+    # sender.add_periodic_task(12.0, update_static_data.s(), name='update static data')
